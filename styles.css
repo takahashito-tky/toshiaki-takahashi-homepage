@@ -782,7 +782,7 @@ img {
 
 .timeline-columns {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1.42fr) minmax(0, 0.88fr);
   gap: 24px;
   text-align: left;
 }
@@ -812,16 +812,20 @@ img {
 
 .compact-timeline li {
   display: grid;
-  grid-template-columns: 142px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: minmax(186px, 0.42fr) minmax(0, 1fr);
+  gap: 16px;
   min-width: 0;
 }
 
 .compact-timeline time {
+  display: block;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: clamp(0.74rem, 1vw, 0.82rem);
   font-weight: 900;
   line-height: 1.42;
+  overflow-wrap: normal;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .compact-timeline span {
