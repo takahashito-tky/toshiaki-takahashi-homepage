@@ -333,7 +333,7 @@
           <p class="result-count" data-funding-count>29件を表示</p>
         </div>
 
-        <ol class="funding-ledger" aria-label="Complete research funding list" data-funding-list>
+        <ol class="funding-ledger" id="funding-ledger" aria-label="Complete research funding list" data-funding-list>
           <li>
             <time>2026年4月 - 2029年3月</time>
             <div>
@@ -567,6 +567,19 @@
             </div>
           </li>
         </ol>
+        <div class="list-actions">
+          <button
+            class="list-toggle"
+            type="button"
+            data-funding-toggle
+            data-collapsed-label="研究費をさらに表示"
+            data-expanded-label="研究費を10件表示に戻す"
+            aria-controls="funding-ledger"
+            aria-expanded="false"
+          >
+            研究費をさらに表示
+          </button>
+        </div>
       </section>
 
       <section class="section home-section home-section-after-funding" aria-label="Current projects and updates">
@@ -587,7 +600,7 @@
             </div>
             <p class="result-count" data-news-count>61件を表示</p>
           </div>
-          <ul class="news-list home-news-list" data-news-list>
+          <ul class="news-list home-news-list" id="latest-news-list" data-news-list>
             <li><time>2026年6月</time><span>第65回日本生体医工学会大会で「データ駆動型生体医工学に向けたセンサ」に関する招待シンポジウム・ワークショップパネルに登壇予定。演者: 髙橋聡明。<a class="source-link" href="https://researchmap.jp/some0104/presentations/53331632?lang=ja" target="_blank" rel="noreferrer">researchmap</a></span></li>
             <li><time>2026年5月</time><span>日本褥瘡学会関東甲信越地方会 東京支部フォーラム・東京都在宅褥瘡セミナーで、褥瘡ケアとAI・ICTに関する招待講演を実施。演者: 髙橋聡明。<a class="source-link" href="https://researchmap.jp/some0104/presentations/53331595?lang=ja" target="_blank" rel="noreferrer">researchmap</a></span></li>
             <li><time>2026年4月</time><span>日本看護科学学会 JANS若手の会 会長に就任。<a class="source-link" href="https://researchmap.jp/some0104/committee_memberships/53654649?lang=ja" target="_blank" rel="noreferrer">researchmap</a></span></li>
@@ -649,8 +662,20 @@
             <li><time>2024年3月</time><span>EAFONS 2024で、看護教育・実践における超音波、XR、AIを用いた革新的介入について招待講演。演者: Toshiaki Takahashi。<a class="source-link" href="https://researchmap.jp/some0104/presentations/45604123?lang=ja" target="_blank" rel="noreferrer">researchmap</a></span></li>
             <li><time>2024年3月</time><span>EAFONS 2024で、訪問看護師向けCross Realityベース訓練支援システムの実現可能性を発表。演者: Shimada Sotaro, Takahashi Toshiaki, Kitamura Aya, Matsumoto Masaru, Mugita Yuko, Sanada Hiromi, Nakagami Gojiro。<a class="source-link" href="https://researchmap.jp/some0104/presentations/45907835?lang=ja" target="_blank" rel="noreferrer">researchmap</a></span></li>
             <li><time>2024年1月</time><span>日本創傷治癒学会 教育委員会に参画。<a class="source-link" href="https://researchmap.jp/some0104/committee_memberships/45603676?lang=ja" target="_blank" rel="noreferrer">researchmap</a></span></li>
-
-</ul>
+          </ul>
+          <div class="list-actions">
+            <button
+              class="list-toggle"
+              type="button"
+              data-news-toggle
+              data-collapsed-label="最新情報をさらに表示"
+              data-expanded-label="最新情報を10件表示に戻す"
+              aria-controls="latest-news-list"
+              aria-expanded="false"
+            >
+              最新情報をさらに表示
+            </button>
+          </div>
         </article>
 
         <article class="home-card current-project-card">

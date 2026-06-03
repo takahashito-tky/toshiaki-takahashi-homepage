@@ -185,7 +185,10 @@ const newsItems = Array.from(document.querySelectorAll("[data-news-list] li"));
 const newsSearch = document.querySelector("[data-news-search]");
 const newsFilterButtons = Array.from(document.querySelectorAll("[data-news-filter]"));
 const newsCount = document.querySelector("[data-news-count]");
+const newsToggle = document.querySelector("[data-news-toggle]");
+const collapsedListLimit = 10;
 let activeNewsFilter = "all";
+let isNewsExpanded = false;
 
 newsItems.forEach((item) => {
   const type = classifyNews(item);
@@ -202,25 +205,44 @@ newsItems.forEach((item) => {
 
 const applyNewsFilter = () => {
   const query = newsSearch?.value.trim().toLowerCase() ?? "";
+  let matchedCount = 0;
   let visibleCount = 0;
 
   newsItems.forEach((item) => {
     const matchesType = activeNewsFilter === "all" || item.dataset.newsType === activeNewsFilter;
     const matchesQuery = !query || item.textContent.toLowerCase().includes(query);
-    const shouldShow = matchesType && matchesQuery;
-    item.classList.toggle("is-filter-hidden", !shouldShow);
+    const isMatched = matchesType && matchesQuery;
+    const shouldShow = isMatched && (isNewsExpanded || matchedCount < collapsedListLimit);
+
+    if (isMatched) {
+      matchedCount += 1;
+    }
+
+    item.classList.toggle("is-filter-hidden", !isMatched);
+    item.classList.toggle("is-archive-hidden", isMatched && !shouldShow);
     item.classList.toggle("is-visible", shouldShow);
     visibleCount += shouldShow ? 1 : 0;
   });
 
   if (newsCount) {
-    newsCount.textContent = `${visibleCount}/${newsItems.length}件を表示`;
+    newsCount.textContent = `${visibleCount}/${matchedCount}件を表示`;
+  }
+
+  if (newsToggle) {
+    const remaining = Math.max(matchedCount - collapsedListLimit, 0);
+    const collapsedLabel = newsToggle.dataset.collapsedLabel ?? "続きを表示";
+    const expandedLabel = newsToggle.dataset.expandedLabel ?? "10件表示に戻す";
+
+    newsToggle.hidden = remaining === 0;
+    newsToggle.textContent = isNewsExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    newsToggle.setAttribute("aria-expanded", String(isNewsExpanded));
   }
 };
 
 newsFilterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeNewsFilter = button.dataset.newsFilter;
+    isNewsExpanded = false;
     newsFilterButtons.forEach((filterButton) => {
       const isActive = filterButton === button;
       filterButton.classList.toggle("is-active", isActive);
@@ -230,14 +252,25 @@ newsFilterButtons.forEach((button) => {
   });
 });
 
-newsSearch?.addEventListener("input", applyNewsFilter);
+newsSearch?.addEventListener("input", () => {
+  isNewsExpanded = false;
+  applyNewsFilter();
+});
+
+newsToggle?.addEventListener("click", () => {
+  isNewsExpanded = !isNewsExpanded;
+  applyNewsFilter();
+});
+
 applyNewsFilter();
 
 const fundingItems = Array.from(document.querySelectorAll("[data-funding-list] li"));
 const fundingSearch = document.querySelector("[data-funding-search]");
 const fundingFilterButtons = Array.from(document.querySelectorAll("[data-funding-filter]"));
 const fundingCount = document.querySelector("[data-funding-count]");
+const fundingToggle = document.querySelector("[data-funding-toggle]");
 let activeFundingFilter = "all";
+let isFundingExpanded = false;
 
 const classifyFundingRole = (item) => {
   const text = item.textContent;
@@ -316,6 +349,7 @@ fundingItems.forEach((item) => {
 
 const applyFundingFilter = () => {
   const query = fundingSearch?.value.trim().toLowerCase() ?? "";
+  let matchedCount = 0;
   let visibleCount = 0;
 
   fundingItems.forEach((item) => {
@@ -325,20 +359,38 @@ const applyFundingFilter = () => {
       role === activeFundingFilter ||
       (activeFundingFilter === "current" && item.dataset.current === "true");
     const matchesQuery = !query || item.textContent.toLowerCase().includes(query);
-    const shouldShow = matchesFilter && matchesQuery;
-    item.classList.toggle("is-filter-hidden", !shouldShow);
+    const isMatched = matchesFilter && matchesQuery;
+    const shouldShow = isMatched && (isFundingExpanded || matchedCount < collapsedListLimit);
+
+    if (isMatched) {
+      matchedCount += 1;
+    }
+
+    item.classList.toggle("is-filter-hidden", !isMatched);
+    item.classList.toggle("is-archive-hidden", isMatched && !shouldShow);
     item.classList.toggle("is-visible", shouldShow);
     visibleCount += shouldShow ? 1 : 0;
   });
 
   if (fundingCount) {
-    fundingCount.textContent = `${visibleCount}/${fundingItems.length}件を表示`;
+    fundingCount.textContent = `${visibleCount}/${matchedCount}件を表示`;
+  }
+
+  if (fundingToggle) {
+    const remaining = Math.max(matchedCount - collapsedListLimit, 0);
+    const collapsedLabel = fundingToggle.dataset.collapsedLabel ?? "続きを表示";
+    const expandedLabel = fundingToggle.dataset.expandedLabel ?? "10件表示に戻す";
+
+    fundingToggle.hidden = remaining === 0;
+    fundingToggle.textContent = isFundingExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    fundingToggle.setAttribute("aria-expanded", String(isFundingExpanded));
   }
 };
 
 fundingFilterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeFundingFilter = button.dataset.fundingFilter;
+    isFundingExpanded = false;
     fundingFilterButtons.forEach((filterButton) => {
       const isActive = filterButton === button;
       filterButton.classList.toggle("is-active", isActive);
@@ -348,7 +400,16 @@ fundingFilterButtons.forEach((button) => {
   });
 });
 
-fundingSearch?.addEventListener("input", applyFundingFilter);
+fundingSearch?.addEventListener("input", () => {
+  isFundingExpanded = false;
+  applyFundingFilter();
+});
+
+fundingToggle?.addEventListener("click", () => {
+  isFundingExpanded = !isFundingExpanded;
+  applyFundingFilter();
+});
+
 applyFundingFilter();
 
 const revealTargets = Array.from(

@@ -989,6 +989,35 @@ img {
   display: none !important;
 }
 
+.is-archive-hidden {
+  display: none !important;
+}
+
+.list-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+
+.list-toggle {
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid rgba(23, 105, 194, 0.24);
+  background: linear-gradient(135deg, rgba(237, 245, 255, 0.96), rgba(231, 250, 246, 0.88));
+  color: var(--blue);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.list-toggle:hover {
+  border-color: rgba(23, 105, 194, 0.4);
+  background: var(--blue);
+  color: var(--white);
+}
+
 .source-link {
   display: inline-flex;
   min-height: 24px;
