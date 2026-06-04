@@ -191,7 +191,7 @@ img {
 
 .hero {
   position: relative;
-  min-height: clamp(600px, 68svh, 780px);
+  min-height: clamp(720px, 80svh, 900px);
   display: grid;
   align-items: center;
   overflow: visible;
@@ -267,7 +267,7 @@ img {
 .hero-content {
   width: min(var(--max), calc(100% - 36px));
   margin: 0 auto;
-  padding: 118px 0 104px;
+  padding: 118px 0 118px;
   text-align: center;
 }
 
@@ -283,21 +283,32 @@ img {
 .hero h1 {
   max-width: 1060px;
   margin: 0 auto;
-  font-size: clamp(3.25rem, 6.6vw, 7rem);
+  font-size: clamp(3.05rem, 6vw, 6.5rem);
   line-height: 0.98;
   letter-spacing: 0;
   text-shadow: 0 8px 32px rgba(0, 0, 0, 0.56);
 }
 
+.hero-question {
+  max-width: 960px;
+  margin: 28px auto 0;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(1.82rem, 3.4vw, 3.25rem);
+  font-weight: 950;
+  line-height: 1.14;
+  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.42);
+}
+
 .hero-name {
   max-width: 1040px;
-  margin: 26px auto 0;
+  margin: 24px auto 0;
   color: rgba(255, 255, 255, 0.92);
-  font-size: clamp(1.18rem, 2.45vw, 2.12rem);
+  font-size: clamp(1.08rem, 2.05vw, 1.82rem);
   font-weight: 850;
   line-height: 1.42;
 }
 
+.hero-question span,
 .hero-name span,
 .hero-copy span {
   display: block;
@@ -2175,8 +2186,8 @@ body.has-js .js-reveal {
   }
 
   .hero {
-    min-height: 640px;
-    margin-bottom: 210px;
+    min-height: 760px;
+    margin-bottom: 220px;
   }
 
   .hero-content {
@@ -2235,12 +2246,17 @@ body.has-js .js-reveal {
   }
 
   .hero {
-    min-height: 650px;
-    margin-bottom: 244px;
+    min-height: 760px;
+    margin-bottom: 258px;
   }
 
   .hero-copy {
     font-size: 1rem;
+  }
+
+  .hero-question {
+    font-size: clamp(1.42rem, 7.4vw, 2.25rem);
+    line-height: 1.18;
   }
 
   .hero-name {
