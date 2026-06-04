@@ -576,6 +576,7 @@ img {
 .topic,
 .activity-grid article,
 .award-list article,
+.committee-list article,
 .record-grid section {
   transition:
     box-shadow 220ms ease,
@@ -590,6 +591,7 @@ img {
 .topic:hover,
 .activity-grid article:hover,
 .award-list article:hover,
+.committee-list article:hover,
 .record-grid section:hover {
   transform: translateY(-4px);
 }
@@ -1743,6 +1745,81 @@ img {
   background: #f3f0e8;
 }
 
+.committees-section {
+  padding-top: clamp(56px, 8vw, 92px);
+  padding-bottom: clamp(56px, 8vw, 92px);
+}
+
+.committee-list {
+  display: grid;
+  gap: 14px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.committee-list article {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(126px, 0.22fr) minmax(0, 1fr);
+  gap: clamp(18px, 4vw, 38px);
+  min-width: 0;
+  padding: clamp(22px, 3.3vw, 34px);
+  border: 1px solid rgba(17, 24, 39, 0.09);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(237, 245, 255, 0.82), rgba(255, 255, 255, 0) 38%),
+    var(--white);
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.07);
+  overflow: hidden;
+}
+
+.committee-list article::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--blue), var(--teal), var(--amber));
+  content: "";
+}
+
+.committee-list time {
+  color: #475569;
+  font-size: clamp(1.05rem, 2.4vw, 1.42rem);
+  font-weight: 950;
+  line-height: 1.25;
+}
+
+.committee-list h3 {
+  margin: 10px 0 10px;
+  color: var(--ink);
+  font-size: clamp(1.12rem, 2vw, 1.42rem);
+  line-height: 1.38;
+  overflow-wrap: anywhere;
+}
+
+.committee-list p {
+  margin: 0;
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.committee-label {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid rgba(23, 105, 194, 0.18);
+  border-radius: 999px;
+  background: rgba(237, 245, 255, 0.86);
+  color: var(--blue);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .publication-section {
   padding-top: clamp(28px, 6vw, 72px);
 }
@@ -2201,6 +2278,7 @@ body.has-js .js-reveal {
   .grant-grid,
   .activity-grid,
   .award-list,
+  .committee-list article,
   .timeline article {
     grid-template-columns: 1fr;
   }
