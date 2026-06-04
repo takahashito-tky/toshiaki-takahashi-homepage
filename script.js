@@ -412,6 +412,44 @@ fundingToggle?.addEventListener("click", () => {
 
 applyFundingFilter();
 
+const committeeItems = Array.from(document.querySelectorAll("[data-committee-list] article"));
+const committeeCount = document.querySelector("[data-committee-count]");
+const committeeToggle = document.querySelector("[data-committee-toggle]");
+const committeeListLimit = 5;
+let isCommitteeExpanded = false;
+
+const applyCommitteeCollapse = () => {
+  let visibleCount = 0;
+
+  committeeItems.forEach((item, index) => {
+    const shouldShow = isCommitteeExpanded || index < committeeListLimit;
+    item.classList.toggle("is-archive-hidden", !shouldShow);
+    item.classList.toggle("is-visible", shouldShow);
+    visibleCount += shouldShow ? 1 : 0;
+  });
+
+  if (committeeCount) {
+    committeeCount.textContent = `${visibleCount}/${committeeItems.length}件を表示`;
+  }
+
+  if (committeeToggle) {
+    const remaining = Math.max(committeeItems.length - committeeListLimit, 0);
+    const collapsedLabel = committeeToggle.dataset.collapsedLabel ?? "続きを表示";
+    const expandedLabel = committeeToggle.dataset.expandedLabel ?? "5件表示に戻す";
+
+    committeeToggle.hidden = remaining === 0;
+    committeeToggle.textContent = isCommitteeExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    committeeToggle.setAttribute("aria-expanded", String(isCommitteeExpanded));
+  }
+};
+
+committeeToggle?.addEventListener("click", () => {
+  isCommitteeExpanded = !isCommitteeExpanded;
+  applyCommitteeCollapse();
+});
+
+applyCommitteeCollapse();
+
 const revealTargets = Array.from(
   document.querySelectorAll(
     ".home-card, .research-console, .profile-main, .profile-side div, .topic, .timeline article, .grant-spotlight, .funding-overview div, .funding-ledger li, .activity-grid article, .award-list article, .committee-list article, .publication-list article, .career-grid article, .keyword-cloud span, .contact-card",

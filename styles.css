@@ -1820,6 +1820,18 @@ img {
   text-transform: uppercase;
 }
 
+.committee-actions {
+  max-width: 980px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin: 16px auto 0;
+}
+
+.committee-actions .result-count {
+  color: #64748b;
+}
+
 .publication-section {
   padding-top: clamp(28px, 6vw, 72px);
 }

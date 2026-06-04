@@ -8,7 +8,7 @@
       name="description"
       content="髙橋聡明の研究プロフィールページ。看護理工学、ケアの質の可視化、遠隔看護、ICT、AI、超音波検査、訪問看護DXに関する研究情報を掲載。"
     >
-    <link rel="stylesheet" href="styles.css?v=20260604-committees">
+    <link rel="stylesheet" href="styles.css?v=20260604-committee-collapse">
   </head>
   <body>
     <header class="site-header" data-header>
@@ -1043,7 +1043,7 @@
             看護科学、看護理工学、創傷治癒の各領域で、若手研究者支援、学会運営、広報、教育に関わる役割を担っています。
           </p>
         </div>
-        <div class="committee-list">
+        <div class="committee-list" id="committee-list" data-committee-list>
           <article>
             <time>2026年4月</time>
             <div>
@@ -1088,6 +1088,21 @@
               </p>
             </div>
           </article>
+        </div>
+        <div class="list-actions committee-actions">
+          <p class="result-count" data-committee-count>4件を表示</p>
+          <button
+            class="list-toggle"
+            type="button"
+            data-committee-toggle
+            data-collapsed-label="委員歴をさらに表示"
+            data-expanded-label="委員歴を5件表示に戻す"
+            aria-controls="committee-list"
+            aria-expanded="false"
+            hidden
+          >
+            委員歴をさらに表示
+          </button>
         </div>
       </section>
 
@@ -1252,6 +1267,6 @@
     </footer>
 
     <button class="floating-top" type="button" aria-label="Back to top" data-top-button>↑</button>
-    <script src="script.js?v=20260604-committees"></script>
+    <script src="script.js?v=20260604-committee-collapse"></script>
   </body>
 </html>
