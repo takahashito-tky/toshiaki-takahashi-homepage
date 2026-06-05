@@ -493,6 +493,44 @@ publicationToggle?.addEventListener("click", () => {
 
 applyPublicationCollapse();
 
+const talkItems = Array.from(document.querySelectorAll("[data-talk-list] article"));
+const talkCount = document.querySelector("[data-talk-count]");
+const talkToggle = document.querySelector("[data-talk-toggle]");
+const talkListLimit = 5;
+let isTalkExpanded = false;
+
+const applyTalkCollapse = () => {
+  let visibleCount = 0;
+
+  talkItems.forEach((item, index) => {
+    const shouldShow = isTalkExpanded || index < talkListLimit;
+    item.classList.toggle("is-archive-hidden", !shouldShow);
+    item.classList.toggle("is-visible", shouldShow);
+    visibleCount += shouldShow ? 1 : 0;
+  });
+
+  if (talkCount) {
+    talkCount.textContent = `${visibleCount}/${talkItems.length}件を表示`;
+  }
+
+  if (talkToggle) {
+    const remaining = Math.max(talkItems.length - talkListLimit, 0);
+    const collapsedLabel = talkToggle.dataset.collapsedLabel ?? "続きを表示";
+    const expandedLabel = talkToggle.dataset.expandedLabel ?? "5件表示に戻す";
+
+    talkToggle.hidden = remaining === 0;
+    talkToggle.textContent = isTalkExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    talkToggle.setAttribute("aria-expanded", String(isTalkExpanded));
+  }
+};
+
+talkToggle?.addEventListener("click", () => {
+  isTalkExpanded = !isTalkExpanded;
+  applyTalkCollapse();
+});
+
+applyTalkCollapse();
+
 const revealTargets = Array.from(
   document.querySelectorAll(
     ".home-card, .research-console, .profile-main, .profile-side div, .topic, .timeline article, .grant-spotlight, .funding-overview div, .funding-ledger li, .activity-grid article, .award-list article, .committee-list article, .media-list article, .publication-list article, .career-grid article, .keyword-cloud span, .contact-card",
