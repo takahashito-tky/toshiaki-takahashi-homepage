@@ -455,6 +455,44 @@ committeeToggle?.addEventListener("click", () => {
 
 applyCommitteeCollapse();
 
+const publicationItems = Array.from(document.querySelectorAll("[data-publication-list] article"));
+const publicationCount = document.querySelector("[data-publication-count]");
+const publicationToggle = document.querySelector("[data-publication-toggle]");
+const publicationListLimit = 5;
+let isPublicationExpanded = false;
+
+const applyPublicationCollapse = () => {
+  let visibleCount = 0;
+
+  publicationItems.forEach((item, index) => {
+    const shouldShow = isPublicationExpanded || index < publicationListLimit;
+    item.classList.toggle("is-archive-hidden", !shouldShow);
+    item.classList.toggle("is-visible", shouldShow);
+    visibleCount += shouldShow ? 1 : 0;
+  });
+
+  if (publicationCount) {
+    publicationCount.textContent = `${visibleCount}/${publicationItems.length}件を表示`;
+  }
+
+  if (publicationToggle) {
+    const remaining = Math.max(publicationItems.length - publicationListLimit, 0);
+    const collapsedLabel = publicationToggle.dataset.collapsedLabel ?? "続きを表示";
+    const expandedLabel = publicationToggle.dataset.expandedLabel ?? "5件表示に戻す";
+
+    publicationToggle.hidden = remaining === 0;
+    publicationToggle.textContent = isPublicationExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    publicationToggle.setAttribute("aria-expanded", String(isPublicationExpanded));
+  }
+};
+
+publicationToggle?.addEventListener("click", () => {
+  isPublicationExpanded = !isPublicationExpanded;
+  applyPublicationCollapse();
+});
+
+applyPublicationCollapse();
+
 const revealTargets = Array.from(
   document.querySelectorAll(
     ".home-card, .research-console, .profile-main, .profile-side div, .topic, .timeline article, .grant-spotlight, .funding-overview div, .funding-ledger li, .activity-grid article, .award-list article, .committee-list article, .media-list article, .publication-list article, .career-grid article, .keyword-cloud span, .contact-card",
