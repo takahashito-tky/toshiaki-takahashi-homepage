@@ -595,6 +595,7 @@ img {
 .activity-grid article,
 .award-list article,
 .committee-list article,
+.media-list article,
 .record-grid section {
   transition:
     box-shadow 220ms ease,
@@ -610,6 +611,7 @@ img {
 .activity-grid article:hover,
 .award-list article:hover,
 .committee-list article:hover,
+.media-list article:hover,
 .record-grid section:hover {
   transform: translateY(-4px);
 }
@@ -994,6 +996,10 @@ img {
 
 .news-chip.grant {
   background: #31468f;
+}
+
+.news-chip.media {
+  background: #6d4c1d;
 }
 
 .news-chip.role {
@@ -1775,7 +1781,8 @@ img {
   margin: 0 auto;
 }
 
-.committee-list article {
+.committee-list article,
+.media-list article {
   position: relative;
   display: grid;
   grid-template-columns: minmax(126px, 0.22fr) minmax(0, 1fr);
@@ -1791,7 +1798,8 @@ img {
   overflow: hidden;
 }
 
-.committee-list article::before {
+.committee-list article::before,
+.media-list article::before {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1801,14 +1809,20 @@ img {
   content: "";
 }
 
-.committee-list time {
+.media-list article::before {
+  background: linear-gradient(180deg, var(--amber), var(--blue), var(--teal));
+}
+
+.committee-list time,
+.media-list time {
   color: #475569;
   font-size: clamp(1.05rem, 2.4vw, 1.42rem);
   font-weight: 950;
   line-height: 1.25;
 }
 
-.committee-list h3 {
+.committee-list h3,
+.media-list h3 {
   margin: 10px 0 10px;
   color: var(--ink);
   font-size: clamp(1.12rem, 2vw, 1.42rem);
@@ -1816,14 +1830,16 @@ img {
   overflow-wrap: anywhere;
 }
 
-.committee-list p {
+.committee-list p,
+.media-list p {
   margin: 0;
   color: #475569;
   font-size: 0.95rem;
   line-height: 1.8;
 }
 
-.committee-label {
+.committee-label,
+.media-label {
   display: inline-flex;
   min-height: 26px;
   align-items: center;
@@ -1836,6 +1852,25 @@ img {
   font-weight: 950;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.media-section {
+  padding-top: clamp(44px, 7vw, 82px);
+  padding-bottom: clamp(56px, 8vw, 92px);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.media-list {
+  display: grid;
+  gap: 14px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.media-label {
+  border-color: rgba(168, 121, 11, 0.24);
+  background: rgba(255, 248, 230, 0.9);
+  color: #a8790b;
 }
 
 .committee-actions {
@@ -2319,6 +2354,7 @@ body.has-js .js-reveal {
   .activity-grid,
   .award-list,
   .committee-list article,
+  .media-list article,
   .timeline article {
     grid-template-columns: 1fr;
   }

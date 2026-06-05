@@ -155,6 +155,7 @@ const newsLabels = {
   talk: "Talk",
   award: "Award",
   grant: "Grant",
+  media: "Media",
   role: "Role",
 };
 
@@ -172,6 +173,10 @@ const classifyNews = (item) => {
 
   if (href.includes("/research_projects/") || text.includes("科研費") || text.includes("研究助成")) {
     return "grant";
+  }
+
+  if (href.includes("/media_coverage/")) {
+    return "media";
   }
 
   if (href.includes("/presentations/") || href.includes("/social_contribution/") || text.includes("講演") || text.includes("発表") || text.includes("登壇")) {
@@ -452,7 +457,7 @@ applyCommitteeCollapse();
 
 const revealTargets = Array.from(
   document.querySelectorAll(
-    ".home-card, .research-console, .profile-main, .profile-side div, .topic, .timeline article, .grant-spotlight, .funding-overview div, .funding-ledger li, .activity-grid article, .award-list article, .committee-list article, .publication-list article, .career-grid article, .keyword-cloud span, .contact-card",
+    ".home-card, .research-console, .profile-main, .profile-side div, .topic, .timeline article, .grant-spotlight, .funding-overview div, .funding-ledger li, .activity-grid article, .award-list article, .committee-list article, .media-list article, .publication-list article, .career-grid article, .keyword-cloud span, .contact-card",
   ),
 );
 
