@@ -179,6 +179,10 @@ const classifyNews = (item) => {
     return "media";
   }
 
+  if (href.includes("/social_contribution/") && !text.includes("講師") && !text.includes("企画") && !text.includes("講演")) {
+    return "role";
+  }
+
   if (href.includes("/presentations/") || href.includes("/social_contribution/") || text.includes("講演") || text.includes("発表") || text.includes("登壇")) {
     return "talk";
   }
