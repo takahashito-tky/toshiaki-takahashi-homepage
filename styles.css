@@ -119,6 +119,36 @@ img {
   line-height: 1.2;
 }
 
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.language-switch a {
+  display: grid;
+  min-width: 34px;
+  min-height: 30px;
+  place-items: center;
+  padding: 4px 9px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.language-switch a:hover,
+.language-switch a:focus-visible,
+.language-switch a.is-active {
+  background: var(--white);
+  color: var(--ink);
+}
+
 .site-nav {
   display: flex;
   align-items: center;

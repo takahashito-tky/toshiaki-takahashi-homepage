@@ -9,6 +9,12 @@ const sections = navLinks
   .filter(Boolean);
 const scrollProgress = document.querySelector("[data-scroll-progress]");
 const topButton = document.querySelector("[data-top-button]");
+const isEnglishPage = document.documentElement.lang.startsWith("en");
+const formatCount = (visible, total) => (isEnglishPage ? `${visible}/${total} shown` : `${visible}/${total}件を表示`);
+const formatRemainingLabel = (label, remaining) =>
+  isEnglishPage ? `${label} (${remaining} more)` : `${label}（残り${remaining}件）`;
+const detailLabel = isEnglishPage ? "Details" : "詳しく見る";
+const closeLabel = isEnglishPage ? "Close" : "閉じる";
 
 const syncHeader = () => {
   header?.classList.toggle("is-scrolled", window.scrollY > 16);
@@ -89,7 +95,7 @@ hero?.addEventListener("pointermove", (event) => {
   hero.style.setProperty("--pointer-y", `${y}%`);
 });
 
-const consoleData = {
+const consoleDataJa = {
   quality: {
     title: "ケアの質を可視化する",
     text: "ケア資源追跡データ、看護記録、画像、センサー情報をつなぎ、看護実践を評価可能なプロセスとして捉えます。",
@@ -119,6 +125,39 @@ const consoleData = {
     term: "2016-現在",
   },
 };
+
+const consoleDataEn = {
+  quality: {
+    title: "Visualizing the Quality of Care",
+    text: "Care resource data, nursing records, images, and sensor information are connected to understand nursing practice as an evaluable process.",
+    project: "JST BOOST / KAKENHI B",
+    method: "RWD / CFML",
+    term: "2025-2030",
+  },
+  ai: {
+    title: "Supporting Nursing Skill Assessment with AI",
+    text: "Video, images, and language are handled as multimodal information to translate observation, judgment, and procedures into teachable knowledge.",
+    project: "Shinohara Foundation",
+    method: "Multimodal LLM",
+    term: "2026-2027",
+  },
+  dx: {
+    title: "Bringing Home Nursing DX Closer to Practice",
+    text: "Remote vital monitoring and ICT are designed to support nursing in medically underserved and home-care settings.",
+    project: "KAKENHI B Co-I",
+    method: "Remote Monitoring",
+    term: "2025-2029",
+  },
+  ultrasound: {
+    title: "Opening Ultrasound and Image Processing to Nursing",
+    text: "Hard-to-see body information related to vascular access, infiltration, constipation, and pelvic-floor assessment is translated into clinical decision support.",
+    project: "KAKENHI / Collaboration",
+    method: "Ultrasound / Imaging AI",
+    term: "2016-Present",
+  },
+};
+
+const consoleData = isEnglishPage ? consoleDataEn : consoleDataJa;
 
 const consoleRoot = document.querySelector("[data-console]");
 const consoleTabs = Array.from(document.querySelectorAll("[data-console-tab]"));
@@ -234,7 +273,7 @@ const applyNewsFilter = () => {
   });
 
   if (newsCount) {
-    newsCount.textContent = `${visibleCount}/${matchedCount}件を表示`;
+    newsCount.textContent = formatCount(visibleCount, matchedCount);
   }
 
   if (newsToggle) {
@@ -243,7 +282,7 @@ const applyNewsFilter = () => {
     const expandedLabel = newsToggle.dataset.expandedLabel ?? "10件表示に戻す";
 
     newsToggle.hidden = remaining === 0;
-    newsToggle.textContent = isNewsExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    newsToggle.textContent = isNewsExpanded ? expandedLabel : formatRemainingLabel(collapsedLabel, remaining);
     newsToggle.setAttribute("aria-expanded", String(isNewsExpanded));
   }
 };
@@ -288,11 +327,15 @@ const classifyFundingRole = (item) => {
     return "related";
   }
 
-  if (text.includes("研究代表者")) {
+  if (text.includes("Related / role pending")) {
+    return "related";
+  }
+
+  if (text.includes("研究代表者") || text.includes("Principal Investigator")) {
     return "pi";
   }
 
-  if (text.includes("研究分担者") || text.includes("Co-I")) {
+  if (text.includes("研究分担者") || text.includes("Co-I") || text.includes("Co-Investigator")) {
     return "co";
   }
 
@@ -302,19 +345,38 @@ const classifyFundingRole = (item) => {
 const isCurrentFunding = (item) => {
   const term = item.querySelector("time")?.textContent ?? "";
 
-  if (term.includes("現在")) {
+  if (term.includes("現在") || term.includes("Present")) {
     return true;
   }
 
   const end = term.split("-").at(-1)?.trim() ?? "";
-  const match = end.match(/(\d{4})年(?:([0-9]+)月)?/);
+  const japaneseMatch = end.match(/(\d{4})年(?:([0-9]+)月)?/);
+  const englishMonths = {
+    Jan: 1,
+    Feb: 2,
+    Mar: 3,
+    Apr: 4,
+    May: 5,
+    Jun: 6,
+    Jul: 7,
+    Aug: 8,
+    Sep: 9,
+    Oct: 10,
+    Nov: 11,
+    Dec: 12,
+  };
+  const englishMatch = end.match(/(\d{4})(?:\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))?/);
 
-  if (!match) {
+  if (!japaneseMatch && !englishMatch) {
     return false;
   }
 
-  const endYear = Number(match[1]);
-  const endMonth = match[2] ? Number(match[2]) : 12;
+  const endYear = Number(japaneseMatch?.[1] ?? englishMatch?.[1]);
+  const endMonth = japaneseMatch?.[2]
+    ? Number(japaneseMatch[2])
+    : englishMatch?.[2]
+      ? englishMonths[englishMatch[2]]
+      : 12;
 
   return endYear > 2026 || (endYear === 2026 && endMonth >= 6);
 };
@@ -322,8 +384,8 @@ const isCurrentFunding = (item) => {
 const fundingLabels = {
   pi: "PI",
   co: "Co-I",
-  related: "確認中",
-  participant: "参画",
+  related: isEnglishPage ? "Pending" : "確認中",
+  participant: isEnglishPage ? "Member" : "参画",
 };
 
 fundingItems.forEach((item) => {
@@ -344,12 +406,12 @@ fundingItems.forEach((item) => {
     const button = document.createElement("button");
     button.className = "item-toggle";
     button.type = "button";
-    button.textContent = "詳しく見る";
+    button.textContent = detailLabel;
     button.setAttribute("aria-expanded", "false");
     button.addEventListener("click", () => {
       const isExpanded = item.classList.toggle("is-expanded");
       item.classList.toggle("is-collapsed", !isExpanded);
-      button.textContent = isExpanded ? "閉じる" : "詳しく見る";
+      button.textContent = isExpanded ? closeLabel : detailLabel;
       button.setAttribute("aria-expanded", String(isExpanded));
     });
     content.append(button);
@@ -382,7 +444,7 @@ const applyFundingFilter = () => {
   });
 
   if (fundingCount) {
-    fundingCount.textContent = `${visibleCount}/${matchedCount}件を表示`;
+    fundingCount.textContent = formatCount(visibleCount, matchedCount);
   }
 
   if (fundingToggle) {
@@ -391,7 +453,7 @@ const applyFundingFilter = () => {
     const expandedLabel = fundingToggle.dataset.expandedLabel ?? "10件表示に戻す";
 
     fundingToggle.hidden = remaining === 0;
-    fundingToggle.textContent = isFundingExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    fundingToggle.textContent = isFundingExpanded ? expandedLabel : formatRemainingLabel(collapsedLabel, remaining);
     fundingToggle.setAttribute("aria-expanded", String(isFundingExpanded));
   }
 };
@@ -438,7 +500,7 @@ const applyCommitteeCollapse = () => {
   });
 
   if (committeeCount) {
-    committeeCount.textContent = `${visibleCount}/${committeeItems.length}件を表示`;
+    committeeCount.textContent = formatCount(visibleCount, committeeItems.length);
   }
 
   if (committeeToggle) {
@@ -447,7 +509,7 @@ const applyCommitteeCollapse = () => {
     const expandedLabel = committeeToggle.dataset.expandedLabel ?? "5件表示に戻す";
 
     committeeToggle.hidden = remaining === 0;
-    committeeToggle.textContent = isCommitteeExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    committeeToggle.textContent = isCommitteeExpanded ? expandedLabel : formatRemainingLabel(collapsedLabel, remaining);
     committeeToggle.setAttribute("aria-expanded", String(isCommitteeExpanded));
   }
 };
@@ -476,7 +538,7 @@ const applyPublicationCollapse = () => {
   });
 
   if (publicationCount) {
-    publicationCount.textContent = `${visibleCount}/${publicationItems.length}件を表示`;
+    publicationCount.textContent = formatCount(visibleCount, publicationItems.length);
   }
 
   if (publicationToggle) {
@@ -485,7 +547,7 @@ const applyPublicationCollapse = () => {
     const expandedLabel = publicationToggle.dataset.expandedLabel ?? "5件表示に戻す";
 
     publicationToggle.hidden = remaining === 0;
-    publicationToggle.textContent = isPublicationExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    publicationToggle.textContent = isPublicationExpanded ? expandedLabel : formatRemainingLabel(collapsedLabel, remaining);
     publicationToggle.setAttribute("aria-expanded", String(isPublicationExpanded));
   }
 };
@@ -514,7 +576,7 @@ const applyTalkCollapse = () => {
   });
 
   if (talkCount) {
-    talkCount.textContent = `${visibleCount}/${talkItems.length}件を表示`;
+    talkCount.textContent = formatCount(visibleCount, talkItems.length);
   }
 
   if (talkToggle) {
@@ -523,7 +585,7 @@ const applyTalkCollapse = () => {
     const expandedLabel = talkToggle.dataset.expandedLabel ?? "5件表示に戻す";
 
     talkToggle.hidden = remaining === 0;
-    talkToggle.textContent = isTalkExpanded ? expandedLabel : `${collapsedLabel}（残り${remaining}件）`;
+    talkToggle.textContent = isTalkExpanded ? expandedLabel : formatRemainingLabel(collapsedLabel, remaining);
     talkToggle.setAttribute("aria-expanded", String(isTalkExpanded));
   }
 };
