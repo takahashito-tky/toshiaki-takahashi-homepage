@@ -167,7 +167,7 @@ const classifyNews = (item) => {
     return "award";
   }
 
-  if (href.includes("/published_papers/") || text.includes("論文")) {
+  if (href.includes("/published_papers/") || href.includes("/misc/") || href.includes("/books_etc/") || text.includes("論文") || text.includes("書籍") || text.includes("執筆")) {
     return "paper";
   }
 
